@@ -1,0 +1,227 @@
+/* Custom styles for read-only form fields */
+input[readonly],
+textarea[readonly] {
+  background-color: #e9ecef; /* Light gray background for read-only fields */
+  opacity: 1; /* Full opacity */
+  cursor: not-allowed; /* Show not-allowed cursor */
+}
+
+/* Center the card in the middle of the page */
+.card {
+  max-width: 800px; /* Limit the maximum width of the card */
+  margin: 0 auto; /* Center the card horizontally */
+}
+
+.star-rating {
+  font-size: 24px;
+  color: #ffd700;
+  cursor: pointer;
+}
+.star {
+  color: #ccc;
+  transition: color 0.2s;
+}
+.star.filled,
+.star:hover,
+.star:hover ~ .star {
+  color: #ffd700;
+}
+
+.cart-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px auto;
+  max-width: 1000px;
+}
+
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.cart-items {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.wishlist-items {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.navbar {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+footer {
+  flex-shrink: 0;
+}
+
+.hero-section {
+  background-image: url("../images/pic5.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  object-fit: cover;
+
+  /* Remove the filter property from here */
+}
+
+
+/* Add this new rule for the pseudo-element */
+.hero-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.5
+  ); /* Adjust the last value (0.5) to control darkness */
+  z-index: 1;
+}
+
+.hero-content {
+  padding: 2rem;
+  border-radius: 10px;
+  color: white;
+  z-index: 2; /* Change this to a lower value */
+  position: absolute; /* Add this */
+  left: 5%;
+  text-align: left;
+}
+
+/* The rest of your CSS remains the same */
+/* Featured Carousel Controls */
+#featuredCarousel .carousel-control-prev,
+#featuredCarousel .carousel-control-next {
+  width: 10%;
+  background: none;
+  border: none;
+  opacity: 1;
+}
+
+#featuredCarousel .carousel-control-prev-icon,
+#featuredCarousel .carousel-control-next-icon {
+  /* background-color: rgba(0, 0, 0, 0.5); */
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  background-size: 20px;
+}
+
+#featuredCarousel .carousel-control-prev-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3e%3cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3e%3c/svg%3e");
+}
+
+#featuredCarousel .carousel-control-next-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3e%3cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3e%3c/svg%3e");
+}
+
+.star-rating,
+.star-rating-input {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.star-rating .star,
+.star-rating-input .star {
+  font-size: 24px;
+  color: #ddd;
+  cursor: pointer;
+  transition: color 0.3s, transform 0.2s;
+}
+
+.star-rating .star.filled,
+.star-rating-input .star.filled,
+.star-rating .star:hover,
+.star-rating-input .star:hover {
+  color: #ffd700;
+  transform: scale(1.2); /* Vergrößern beim Hover */
+}
+
+.review-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 15px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.review-card:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.review-body {
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.review-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+/* Voting styles*/
+.vote-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.vote-buttons button {
+  display: inline-block;
+  padding: 5px 10px;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.vote-buttons button:hover {
+  background-color: #ffd700;
+  color: #fff;
+}
+
+
+

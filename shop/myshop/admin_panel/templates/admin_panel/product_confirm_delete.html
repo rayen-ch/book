@@ -1,0 +1,31 @@
+<!-- admin_panel/templates/admin_panel/product_confirm_delete.html -->
+{% extends "base.html" %} {% block content %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+    <li
+      class="breadcrumb-item {% if forloop.last %}active{% endif %}"
+      {%
+      if
+      forloop.last
+      %}aria-current="page"
+      {%
+      endif
+      %}
+    >
+      {% if not forloop.last %}
+      <a href="{{ breadcrumb.url }}">{{ breadcrumb.name }}</a>
+      {% else %} {{ breadcrumb.name }} {% endif %}
+    </li>
+    {% endfor %}
+  </ol>
+</nav>
+
+<h1>Confirm Delete Product</h1>
+<p>Are you sure you want to delete "{{ product.name }}"?</p>
+<form method="post">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-danger">Delete</button>
+  <a href="{% url 'admin_product_list' %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

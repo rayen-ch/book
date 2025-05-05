@@ -1,0 +1,174 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-12 mb-3">
+      <div class="btn-group" role="group" aria-label="Cart and Wishlist">
+        <a href="{% url 'cart:view_cart' %}" class="btn btn-dark active"
+          >Cart ({{ cart_items.count }})</a
+        >
+        <a href="{% url 'cart:view_wishlist' %}" class="btn btn-light"
+          >Wishlist ({{ wishlist_items.count }})</a
+        >
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-8">
+      <h2>You've got {{ cart_items.count }} items in your cart</h2>
+      <p class="text-muted">
+        Items in your cart are not reserved - to make them yours head to
+        checkout now.
+      </p>
+
+      <a
+        href="{% url 'cart:empty_cart' %}"
+        class="btn btn-sm btn-outline-secondary float-end"
+      >
+        <i class="bi bi-trash"></i> Empty cart
+      </a>
+
+      <div class="cart-items mt-4">
+        {% for item in cart_items %}
+        <div class="card mb-3">
+          <div class="row g-0">
+            <div class="col-md-2">
+              {% with item.product.images.first as image %} {% if image %}
+              <img
+                src="{{ image.image.url }}"
+                class="img-fluid rounded-start"
+                alt="{{ item.product.name }}"
+              />
+              {% else %}
+              <img
+                src="{% static 'images/noImgPlaceholder.jpeg' %}"
+                class="img-fluid rounded-start"
+                alt="No image available"
+              />
+              {% endif %} {% endwith %}
+            </div>
+            <div class="col-md-10">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                  <h5 class="card-title">{{ item.product.name }}</h5>
+                  <h5>{{ item.product.price|floatformat:2 }} €</h5>
+                </div>
+                <p class="card-text">Color: {{ item.product.color }}</p>
+                <p class="card-text">Frame Size: {{ item.product.size }}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <form
+                      method="post"
+                      action="{% url 'cart:add_to_wishlist' item.product.id %}"
+                      style="display: inline"
+                    >
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-sm btn-secondary">
+                        Move to Wishlist
+                      </button>
+                    </form>
+                    <a
+                      href="{% url 'cart:remove_cart_item' item.id %}"
+                      class="btn btn-sm btn-link text-muted"
+                      >Remove</a
+                    >
+                  </div>
+                  <form
+                    method="POST"
+                    action="{% url 'cart:update_cart_item' item.id %}"
+                    class="d-flex align-items-center"
+                  >
+                    {% csrf_token %}
+                    <button
+                      type="submit"
+                      name="action"
+                      value="decrease"
+                      class="btn btn-outline-secondary btn-sm"
+                    >
+                      -
+                    </button>
+                    <input
+                      type="number"
+                      name="quantity"
+                      value="{{ item.quantity }}"
+                      min="1"
+                      class="form-control form-control-sm mx-2"
+                      style="width: 60px"
+                      readonly
+                    />
+                    <button
+                      type="submit"
+                      name="action"
+                      value="increase"
+                      class="btn btn-outline-secondary btn-sm"
+                    >
+                      +
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="card-title">Order summary</h3>
+          <div class="d-flex justify-content-between mb-2">
+            <span>Subtotal</span>
+            <span>{{ total_price|floatformat:2 }} €</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span>Shipping</span>
+            <span>{{ shipping_cost|floatformat:2 }} €</span>
+          </div>
+          <hr />
+          <div class="d-flex justify-content-between mb-2">
+            <strong>Total</strong>
+            <strong>{{ total_with_shipping|floatformat:2 }} €</strong>
+          </div>
+          <small class="text-muted">incl. {{ tax|floatformat:2 }} € tax</small>
+
+          <button class="btn btn-dark w-100 mt-3">Checkout</button>
+
+          <div class="mt-3 text-center">
+            <i class="fab fa-cc-visa fa-2x mx-2"></i>
+            <i class="fab fa-cc-mastercard fa-2x mx-2"></i>
+            <i class="fab fa-cc-amex fa-2x mx-2"></i>
+            <i class="fab fa-cc-paypal fa-2x mx-2"></i>
+            <i class="fab fa-apple-pay fa-2x mx-2"></i>
+            <i class="fab fa-google-pay fa-2x mx-2"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mt-3">
+        <div class="card-body">
+          <h5 class="card-title">Add a coupon code (optional)</h5>
+          <form>
+            <div class="input-group mb-3">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Enter coupon code"
+              />
+              <button class="btn btn-outline-secondary" type="button">
+                Apply
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="mt-3 text-center">
+        <a href="#" class="btn btn-link">Live Chat</a>
+        <a href="#" class="btn btn-link">Call us</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

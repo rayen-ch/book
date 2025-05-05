@@ -1,0 +1,81 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+    <li
+      class="breadcrumb-item {% if forloop.last %}active{% endif %}"
+      {%
+      if
+      forloop.last
+      %}aria-current="page"
+      {%
+      endif
+      %}
+    >
+      {% if not forloop.last %}
+      <a href="{{ breadcrumb.url }}">{{ breadcrumb.name }}</a>
+      {% else %} {{ breadcrumb.name }} {% endif %}
+    </li>
+    {% endfor %}
+  </ol>
+</nav>
+
+<h1 class="mb-4">Admin Dashboard</h1>
+
+<div class="row">
+  <div class="col-md-4 mb-4">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Products</h5>
+        <p class="card-text">Manage your product catalog</p>
+        <a href="{% url 'admin_product_list' %}" class="btn btn-primary"
+          >Manage Products</a
+        >
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4 mb-4">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Reviews</h5>
+        <p class="card-text">Manage customer reviews</p>
+        <a href="{% url 'admin_review_list' %}" class="btn btn-primary"
+          >Manage Reviews</a
+        >
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4 mb-4">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Users</h5>
+        <p class="card-text">Manage user accounts</p>
+        <a href="{% url 'admin_user_list' %}" class="btn btn-primary"
+          >Manage Users</a
+        >
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6 mb-4">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Recent Orders</h5>
+        <p class="card-text">View and manage recent orders</p>
+        <a href="#" class="btn btn-primary">View Orders</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 mb-4">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Analytics</h5>
+        <p class="card-text">View sales and traffic analytics</p>
+        <a href="#" class="btn btn-primary">View Analytics</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

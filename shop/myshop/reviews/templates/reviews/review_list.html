@@ -1,0 +1,55 @@
+{% for review in product.reviews.all %}
+<div class="col-md-6 mb-4">
+  <div class="card">
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h5 class="card-title mb-0">{{ review.user.username }}</h5>
+        <div class="star-rating" data-rating="{{ review.rating }}">
+          {% for i in "12345" %}
+          <span
+            class="star{% if forloop.counter <= review.rating %} filled{% endif %}"
+            >&#9733;</span
+          >
+          {% endfor %}
+        </div>
+      </div>
+      <p class="card-text">{{ review.comment }}</p>
+      <p class="card-text">
+        <small class="text-muted">{{ review.created_at|date:"M d, Y" }}</small>
+      </p>
+
+      <div class="vote-buttons">
+        <form method="post" action="{% url 'vote_review' review.id %}">
+            {% csrf_token %}
+            <button type="submit" name="value" value="1" class="btn btn-success btn-sm">
+                👍 {{ review.total_upvotes }}
+            </button>
+            <button type="submit" name="value" value="-1" class="btn btn-danger btn-sm">
+                👎 {{ review.total_downvotes }}
+            </button>
+        </form>
+    </div>
+´´    
+    
+      {% if review.user == request.user %}
+      <button
+        class="btn btn-sm btn-secondary edit-review-btn"
+        data-product-id="{{ product.id }}"
+      >
+        Edit
+      </button>
+      <form
+        method="post"
+        action="{% url 'review-delete' review.id %}"
+        style="display: inline"
+      >
+        {% csrf_token %}
+        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% empty %}
+<p>No reviews yet. Be the first to review this product!</p>
+{% endfor %}

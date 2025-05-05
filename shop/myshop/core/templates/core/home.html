@@ -1,0 +1,208 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<div class="container-fluid px-0">
+  <!-- Hero Section -->
+  <section class="hero-section text-center text-white">
+    <div class="hero-content">
+      <h1 class="display-4">Welcome to BookShop</h1>
+      <p class="lead">Discover Your Next Great Read with AI-Driven Recommendations</p>
+      <a href="{% url 'product_list' %}" class="btn btn-primary btn-lg"
+        >Explore Our Products</a
+      >
+    </div>
+  </section> 
+  
+
+
+  <!-- Featured Products Carousel -->
+  <section class="featured-products py-5">
+    <div class="container">
+      <h2 class="text-center mb-4">Featured Products</h2>
+      <div id="featuredCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          {% for product in featured_products %}
+          <div class="carousel-item {% if forloop.first %}active{% endif %}">
+            <div class="row">
+              <div class="col-md-6">
+                <img
+                  src="{{ product.images.first.image.url }}"
+                  class="d-block w-100 img-fluid"
+                  alt="{{ product.name }}"
+                />
+              </div>
+              <div class="col-md-6 d-flex align-items-center">
+                <div>
+                  <h3>{{ product.name }}</h3>
+                  <p>{{ product.description|truncatewords:30 }}</p>
+                  <a
+                    href="{% url 'product_detail' product.id %}"
+                    class="btn btn-outline-primary"
+                    >View Details</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <button
+          class="carousel-control-prev"
+          type="button"
+          data-bs-target="#featuredCarousel"
+          data-bs-slide="prev"
+        >
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button
+          class="carousel-control-next"
+          type="button"
+          data-bs-target="#featuredCarousel"
+          data-bs-slide="next"
+        >
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Category Showcases -->
+  <section class="category-showcase py-5 bg-light">
+    <div class="container">
+      <h2 class="text-center mb-4">Our Collections</h2>
+      <div class="row">
+        <div class="col-md-3 mb-4">
+          <div class="card h-100">
+            <img
+              src="{% static 'images/adventure.jpg' %}"
+              class="card-img-top img-fluid"
+              alt="adventure"
+            />
+            <div class="card-body">
+              <h5 class="card-title">Adventure</h5>
+              <p class="card-text">
+                ur adventure reading space
+              </p>
+              <a href="{% url 'product_list' %}" class="btn btn-primary"
+                >See Adventure</a
+              >
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 mb-4">
+          <div class="card h-100">
+            <img
+              src="{% static 'images/romance.jpg' %}"
+              class="card-img-top img-fluid"
+              alt="Romance"
+            />
+            <div class="card-body">
+              <h5 class="card-title">Romance</h5>
+              <p class="card-text">
+                enjoy the romance
+              </p>
+              <a href="{% url 'romance_list' %}" class="btn btn-primary"
+                >See Romance</a
+              >
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 mb-4">
+          <div class="card h-100">
+            <img
+              src="{% static 'images/sci.jpg' %}"
+              class="card-img-top img-fluid"
+              alt="Sci-Fi"
+            />
+            <div class="card-body">
+              <h5 class="card-title">Sci-fi</h5>
+              <p class="card-text">
+                Discover Sci-Fi              </p>
+              <a href="{% url 'sciFi_list' %}" class="btn btn-primary"
+                >See Sci-Fi</a
+              >
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 mb-4">
+          <div class="card h-100">
+            <img
+              src="{% static 'images/horror.jpg' %}"
+              class="card-img-top img-fluid"
+              alt="Horror"
+            />
+            <div class="card-body">
+              <h5 class="card-title">Horror</h5>
+              <p class="card-text">
+                discover Horror
+              </p>
+              <a href="{% url 'horror_list' %}" class="btn btn-primary"
+                >See horror</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Latest Products -->
+  <section class="latest-products py-5">
+    <div class="container">
+      <h2 class="text-center mb-4">Latest Arrivals</h2>
+      <div class="row">
+        {% for product in latest_products %}
+        <div class="col-md-3 mb-4">
+          <div class="card h-100">
+            <img
+              src="{{ product.images.first.image.url }}"
+              class="card-img-top img-fluid"
+              alt="{{ product.name }}"
+            />
+            <div class="card-body">
+              <h5 class="card-title">{{ product.name }}</h5>
+              <p class="card-text">${{ product.price }}</p>
+              <a
+                href="{% url 'product_detail' product.id %}"
+                class="btn btn-outline-primary"
+                >View Details</a
+              >
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+</div>
+
+<style>
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  main {
+    flex: 1 0 auto;
+  }
+
+  footer {
+    flex-shrink: 0;
+  }
+
+  .card-img-top {
+    height: 350px;
+    object-fit: cover;
+  }
+  .hero-section {
+    background-image: url("{% static 'images/books.jpg' %}");
+    background-size: cover;
+    background-position: center;
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+</style>
+{% endblock %}

@@ -1,0 +1,150 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+<div class="container mt-4">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      {% for breadcrumb in breadcrumbs %}
+      <li
+        class="breadcrumb-item {% if forloop.last %}active{% endif %}"
+        {%
+        if
+        forloop.last
+        %}aria-current="page"
+        {%
+        endif
+        %}
+      >
+        {% if not forloop.last %}
+        <a href="{{ breadcrumb.url }}">{{ breadcrumb.name }}</a>
+        {% else %} {{ breadcrumb.name }} {% endif %}
+      </li>
+      {% endfor %}
+    </ol>
+  </nav>
+
+  <h1 class="mb-4">
+    {% if form.instance.pk %}Edit{% else %}Add{% endif %} Product
+  </h1>
+
+  <form method="post" enctype="multipart/form-data" id="product-form">
+    {% csrf_token %}
+
+    <div class="mb-3">{{ form.name.label_tag }} {{ form.name }}</div>
+
+    <div class="mb-3">
+      {{ form.description.label_tag }} {{ form.description }}
+    </div>
+
+    <div class="mb-3">{{ form.price.label_tag }} {{ form.price }}</div>
+
+    <div class="mb-3">{{ form.category.label_tag }} {{ form.category }}</div>
+
+    <div class="mb-3">{{ form.stock.label_tag }} {{ form.stock }}</div>
+
+    <div class="mb-3">{{ form.discount.label_tag }} {{ form.discount }}</div>
+
+    <div class="mb-3 form-check">
+      {{ form.featured }} {{ form.featured.label_tag }}
+    </div>
+
+    <div class="mb-3">
+      <label for="id_pdf">PDF File</label>
+      <input type="file" name="pdf" id="id_pdf" class="form-control" />
+      {% if form.instance.pdf %}
+      <div class="mt-2">
+        <a href="{{ form.instance.pdf.url }}" target="_blank">Current PDF</a>
+        <div class="form-check">
+          <input
+            type="checkbox"
+            name="delete_pdf"
+            id="delete_pdf"
+            class="form-check-input"
+          />
+          <label for="delete_pdf" class="form-check-label">Delete PDF</label>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+
+    <h2 class="mt-4 mb-3">Product Images</h2>
+    {{ formset.management_form }}
+    <div id="formset-container">
+      {% for form in formset %}
+      <div class="mb-3 image-form">
+        {{ form.id }}
+        <div class="row">
+          <div class="col-md-6">
+            <input
+              type="file"
+              name="{{ form.image.html_name }}"
+              id="{{ form.image.auto_id }}"
+              class="form-control"
+            />
+          </div>
+          <div class="col-md-6">
+            {% if form.instance.pk %}
+            <img
+              src="{{ form.instance.image.url }}"
+              alt="Product Image"
+              class="img-thumbnail"
+              style="max-width: 100px; max-height: 100px"
+            />
+            <div class="form-check">
+              {{ form.DELETE }}
+              <label
+                class="form-check-label"
+                for="{{ form.DELETE.id_for_label }}"
+                >Delete</label
+              >
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <button type="button" class="btn btn-secondary mb-3" id="add-more-images">
+      Add More Images
+    </button>
+
+    <div>
+      <button type="submit" class="btn btn-primary">
+        {% if form.instance.pk %}Update{% else %}Create{% endif %} Product
+      </button>
+    </div>
+  </form>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const addMoreButton = document.getElementById("add-more-images");
+    const formsetContainer = document.getElementById("formset-container");
+    const totalFormsInput = document.getElementById("id_form-TOTAL_FORMS");
+
+    addMoreButton.addEventListener("click", function () {
+      const formCount = formsetContainer.children.length;
+      const newForm = formsetContainer.children[0].cloneNode(true);
+
+      newForm.innerHTML = newForm.innerHTML.replace(
+        /form-(\d+)/g,
+        `form-${formCount}`
+      );
+      newForm.innerHTML = newForm.innerHTML.replace(
+        /id_form-(\d+)/g,
+        `id_form-${formCount}`
+      );
+
+      const inputFile = newForm.querySelector('input[type="file"]');
+      inputFile.value = "";
+
+      const img = newForm.querySelector("img");
+      if (img) img.remove();
+
+      const deleteCheckbox = newForm.querySelector('input[type="checkbox"]');
+      if (deleteCheckbox) deleteCheckbox.parentElement.remove();
+
+      formsetContainer.appendChild(newForm);
+      totalFormsInput.value = formCount + 1;
+    });
+  });
+</script>
+{% endblock %}

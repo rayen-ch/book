@@ -1,0 +1,57 @@
+<!-- admin_panel/templates/admin_panel/product_list.html -->
+{% extends "base.html" %} {% block content %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+    <li
+      class="breadcrumb-item {% if forloop.last %}active{% endif %}"
+      {%
+      if
+      forloop.last
+      %}aria-current="page"
+      {%
+      endif
+      %}
+    >
+      {% if not forloop.last %}
+      <a href="{{ breadcrumb.url }}">{{ breadcrumb.name }}</a>
+      {% else %} {{ breadcrumb.name }} {% endif %}
+    </li>
+    {% endfor %}
+  </ol>
+</nav>
+
+<h1>Product List</h1>
+<a href="{% url 'admin_product_create' %}" class="btn btn-primary"
+  >Add New Product</a
+>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in products %}
+    <tr>
+      <td>{{ product.name }}</td>
+      <td>{{ product.price }}</td>
+      <td>
+        <a
+          href="{% url 'admin_product_update' product.id %}"
+          class="btn btn-warning"
+          >Edit</a
+        >
+        <a
+          href="{% url 'admin_product_delete' product.id %}"
+          class="btn btn-danger"
+          >Delete</a
+        >
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
